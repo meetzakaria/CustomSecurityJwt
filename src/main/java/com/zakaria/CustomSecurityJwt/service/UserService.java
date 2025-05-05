@@ -40,7 +40,7 @@ public class UserService {
 
     @Transactional
     public User createUser(User user) {
-        if (userRepository.existsByEmail(user.getEmail())) {
+        if (userRepository.existsByPhoneNumber(user.getPhoneNumber())) {
             throw new RuntimeException("Email is already in use");
         }
 
@@ -55,16 +55,15 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
 
         // Update fields
-        user.setFirstName(userDetails.getFirstName());
-        user.setLastName(userDetails.getLastName());
+        user.setName(userDetails.getName());
         user.setPhoneNumber(userDetails.getPhoneNumber());
 
         // Only update email if it has changed and is not already in use
-        if (!user.getEmail().equals(userDetails.getEmail())) {
-            if (userRepository.existsByEmail(userDetails.getEmail())) {
+        if (!user.getPhoneNumber().equals(userDetails.getPhoneNumber())) {
+            if (userRepository.existsByPhoneNumber(userDetails.getPhoneNumber())) {
                 throw new RuntimeException("Email is already in use");
             }
-            user.setEmail(userDetails.getEmail());
+            user.setPhoneNumber(userDetails.getPhoneNumber());
         }
 
         // Update password if provided
@@ -115,8 +114,8 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public UserDetails loadUserByUsername(String username) {
-        Optional<User> byEmail = userRepository.findByEmail(username);
-        return byEmail.map(CustomUserDetails::new).orElse(null);
+    public UserDetails loadUserByUsername(String phoneNumber) {
+        Optional<User> byPhoneNumber = userRepository.findByPhoneNumber(phoneNumber);
+        return byPhoneNumber.map(CustomUserDetails::new).orElse(null);
     }
 }

@@ -1,9 +1,9 @@
 package com.zakaria.CustomSecurityJwt.service;
 
-import jakarta.transaction.Transactional;
 import com.zakaria.CustomSecurityJwt.model.CustomUserDetails;
 import com.zakaria.CustomSecurityJwt.model.User;
 import com.zakaria.CustomSecurityJwt.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,9 +22,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + email));
+    public UserDetails loadUserByUsername(String phoneNumber) throws UsernameNotFoundException {
+        User user = userRepository.findByPhoneNumber(phoneNumber)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with number: " + phoneNumber));
 
         return new CustomUserDetails(user);
     }

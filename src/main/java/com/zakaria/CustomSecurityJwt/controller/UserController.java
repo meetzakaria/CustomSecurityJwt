@@ -66,11 +66,9 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserCreateRequest userCreateRequest) {
         User user = new User(
-                userCreateRequest.email(),
                 userCreateRequest.password(),
                 userCreateRequest.role(),
-                userCreateRequest.firstName(),
-                userCreateRequest.lastName(),
+                userCreateRequest.name(),
                 userCreateRequest.phoneNumber()
         );
 
@@ -83,9 +81,9 @@ public class UserController {
     public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdateRequest userUpdateRequest) {
         try {
             User userDetails = new User();
-            userDetails.setFirstName(userUpdateRequest.firstName());
-            userDetails.setLastName(userUpdateRequest.lastName());
-            userDetails.setEmail(userUpdateRequest.email());
+            userDetails.setName(userUpdateRequest.name());
+            userDetails.setPassword(userUpdateRequest.password());
+            userDetails.setRole(userUpdateRequest.role());
             userDetails.setPhoneNumber(userUpdateRequest.phoneNumber());
 
             // Only admin can update roles
@@ -145,13 +143,9 @@ public class UserController {
     private UserResponse convertToDTO(User user) {
         UserResponse dto = new UserResponse();
         dto.setId(user.getId());
-        dto.setEmail(user.getEmail());
         dto.setRole(user.getRole());
-        dto.setFirstName(user.getFirstName());
-        dto.setLastName(user.getLastName());
+        dto.setName(user.getName());
         dto.setPhoneNumber(user.getPhoneNumber());
-        dto.setCreatedAt(user.getCreatedAt());
-        dto.setUpdatedAt(user.getUpdatedAt());
         return dto;
     }
 }

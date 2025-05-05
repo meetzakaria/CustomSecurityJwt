@@ -11,15 +11,13 @@ import java.util.Collections;
 @Getter
 public class JwtUserDetails implements UserDetails {
     private final Long id;
-    private final String username;
-    private final String email;
+    private final String name;
     private final String role;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public JwtUserDetails(Long id, String username, String email, String role) {
+    public JwtUserDetails(Long id, String name, String role) {
         this.id = id;
-        this.username = username;
-        this.email = email;
+        this.name = name;
         this.role = role;
         this.authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role));
     }
@@ -36,7 +34,7 @@ public class JwtUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return name;
     }
 
 }

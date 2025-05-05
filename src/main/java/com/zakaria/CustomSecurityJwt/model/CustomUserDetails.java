@@ -22,15 +22,11 @@ public record CustomUserDetails(User user) implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getEmail();
+        return user.getName();
     }
 
     public Long getId() {
         return user.getId();
-    }
-
-    public String getEmail() {
-        return user.getEmail();
     }
 
     public Role getRole() {

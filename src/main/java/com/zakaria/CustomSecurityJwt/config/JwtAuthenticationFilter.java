@@ -1,13 +1,13 @@
 package com.zakaria.CustomSecurityJwt.config;
 
+import com.zakaria.CustomSecurityJwt.model.JwtUserDetails;
+import com.zakaria.CustomSecurityJwt.service.CustomUserDetailsService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import com.zakaria.CustomSecurityJwt.model.JwtUserDetails;
-import com.zakaria.CustomSecurityJwt.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -46,7 +46,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 Claims claims = tokenProvider.getClaimsFromToken(jwt);
                 String username = claims.getSubject();
                 Long userId = claims.get("id", Long.class);
-                String email = claims.get("email", String.class);
                 String roleName = claims.get("role", String.class);
 
                 List<GrantedAuthority> authorities = Collections.singletonList(
@@ -55,7 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
-                                new JwtUserDetails(userId, username, email, roleName),
+                                new JwtUserDetails(userId, username, roleName),
                                 null,
                                 authorities
                         );

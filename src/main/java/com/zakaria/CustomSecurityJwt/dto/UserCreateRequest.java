@@ -9,11 +9,7 @@ import com.zakaria.CustomSecurityJwt.constants.Role;
 public record UserCreateRequest(
         @NotBlank(message = "Username cannot be blank")
         @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
-        String username,
-
-        @NotBlank(message = "Email cannot be blank")
-        @Email(message = "Email should be valid")
-        String email,
+        String name,
 
         @NotBlank(message = "Password cannot be blank")
         @Size(min = 6, message = "Password must be at least 6 characters")
@@ -22,8 +18,6 @@ public record UserCreateRequest(
         @NotNull(message = "Role cannot be null")
         Role role,
 
-        String firstName,
-        String lastName,
         String phoneNumber
 ) {
 }

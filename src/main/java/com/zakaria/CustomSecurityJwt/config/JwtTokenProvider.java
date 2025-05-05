@@ -1,10 +1,10 @@
 package com.zakaria.CustomSecurityJwt.config;
 
+import com.zakaria.CustomSecurityJwt.model.CustomUserDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
 import lombok.extern.slf4j.Slf4j;
-import com.zakaria.CustomSecurityJwt.model.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -31,7 +31,6 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setSubject(userPrincipal.getUsername())
                 .claim("id", userPrincipal.getId())
-                .claim("email", userPrincipal.getEmail())
                 .claim("role", userPrincipal.getRole().name())
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)

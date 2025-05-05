@@ -47,11 +47,9 @@ public class AuthController {
     ) {
         try {
             User user = new User(
-                    registerRequest.email(),
                     registerRequest.password(),
                     registerRequest.role(),
-                    registerRequest.firstName(),
-                    registerRequest.lastName(),
+                    registerRequest.name(),
                     registerRequest.phoneNumber()
             );
 
@@ -60,10 +58,8 @@ public class AuthController {
             // Create DTO to return (exclude sensitive info)
             UserResponse userResponse = new UserResponse();
             userResponse.setId(savedUser.getId());
-            userResponse.setEmail(savedUser.getEmail());
             userResponse.setRole(savedUser.getRole());
-            userResponse.setFirstName(savedUser.getFirstName());
-            userResponse.setLastName(savedUser.getLastName());
+            userResponse.setName(savedUser.getName());
             userResponse.setPhoneNumber(savedUser.getPhoneNumber());
 
             return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
@@ -78,7 +74,7 @@ public class AuthController {
                                               @Valid @RequestBody LoginRequest loginRequest) {
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.password())
+                    new UsernamePasswordAuthenticationToken(loginRequest.phoneNumber(), loginRequest.password())
             );
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -92,16 +88,6 @@ public class AuthController {
             Map<String, Object> responseData = new HashMap<>();
             responseData.put("access_token", jwt);
             responseData.put("tokenType", "Bearer");
-
-            // Add user information
-            Map<String, Object> userData = new HashMap<>();
-            userData.put("id", user.getId());
-            userData.put("email", user.getEmail());
-            userData.put("role", user.getRole());
-            userData.put("firstName", user.getFirstName());
-            userData.put("lastName", user.getLastName());
-
-            responseData.put("user", userData);
 
             return ResponseEntity.ok(responseData);
         } catch (AuthenticationException e) {
@@ -125,10 +111,8 @@ public class AuthController {
 
             UserResponse userResponse = new UserResponse();
             userResponse.setId(user.getId());
-            userResponse.setEmail(user.getEmail());
+            userResponse.setName(user.getName());
             userResponse.setRole(user.getRole());
-            userResponse.setFirstName(user.getFirstName());
-            userResponse.setLastName(user.getLastName());
 
             return ResponseEntity.ok(userResponse);
         }
