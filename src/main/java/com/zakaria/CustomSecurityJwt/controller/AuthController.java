@@ -1,8 +1,5 @@
 package com.zakaria.CustomSecurityJwt.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
 import com.zakaria.CustomSecurityJwt.config.JwtTokenProvider;
 import com.zakaria.CustomSecurityJwt.dto.LoginRequest;
 import com.zakaria.CustomSecurityJwt.dto.RegisterRequest;
@@ -10,6 +7,9 @@ import com.zakaria.CustomSecurityJwt.dto.UserResponse;
 import com.zakaria.CustomSecurityJwt.model.CustomUserDetails;
 import com.zakaria.CustomSecurityJwt.model.User;
 import com.zakaria.CustomSecurityJwt.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,7 +26,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "*")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
