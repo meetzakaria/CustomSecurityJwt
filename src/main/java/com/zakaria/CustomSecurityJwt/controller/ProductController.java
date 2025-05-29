@@ -1,8 +1,11 @@
 package com.zakaria.CustomSecurityJwt.controller;
 
+import com.zakaria.CustomSecurityJwt.dto.ProductForm;
 import com.zakaria.CustomSecurityJwt.model.Product;
+import com.zakaria.CustomSecurityJwt.model.User;
 import com.zakaria.CustomSecurityJwt.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,10 +16,52 @@ import java.util.List;
 @RequestMapping("/api/products")
 public class ProductController {
 
+    public ResponseEntity<String> saveUser(@RequestBody User user) {
+        // আপনার সার্ভিস কল বা লজিক এখানে
+        return ResponseEntity.ok("User saved successfully");
+    }
+
     @Autowired
     private ProductRepository productRepository;
 
-    @PostMapping(consumes = "multipart/form-data")
+
+
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> uploadFile(
+            @RequestPart("file") MultipartFile file,
+            @RequestPart("description") String description) {
+        // ফাইল প্রসেসিং
+        return ResponseEntity.ok("File uploaded successfully!");
+    }
+
+    @PostMapping(value = "/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Product> addProduct(@ModelAttribute ProductForm form) {
+        try {
+            Product product = new Product();
+            product.setName(form.getName());
+            product.setDescription(form.getDescription());
+            product.setPrice(form.getPrice());
+            product.setQuantity(form.getQuantity());
+//            product.setCategory(form.getCategory());
+//            product.setImage(form.getImage().getBytes());
+
+            Product saved = productRepository.save(product);
+            return ResponseEntity.ok(saved);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping(value = "/api/products/add", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Product> addProduct(@RequestBody Product product) {
+        // প্রোডাক্ট সেভ করুন
+        return ResponseEntity.ok(product);
+    }
+
+
+
+
+
     public ResponseEntity<Product> addProduct(
             @RequestParam("name") String name,
             @RequestParam("description") String description,
