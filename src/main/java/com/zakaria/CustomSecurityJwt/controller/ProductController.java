@@ -42,8 +42,8 @@ public class ProductController {
             product.setDescription(form.getDescription());
             product.setPrice(form.getPrice());
             product.setQuantity(form.getQuantity());
-//            product.setCategory(form.getCategory());
-//            product.setImage(form.getImage().getBytes());
+            product.setCategory(form.getCategory());
+            product.setImage(form.getImage().getBytes());
 
             Product saved = productRepository.save(product);
             return ResponseEntity.ok(saved);
