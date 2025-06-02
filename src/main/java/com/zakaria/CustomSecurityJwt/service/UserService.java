@@ -1,10 +1,11 @@
 package com.zakaria.CustomSecurityJwt.service;
 
-import jakarta.transaction.Transactional;
 import com.zakaria.CustomSecurityJwt.constants.Role;
+import com.zakaria.CustomSecurityJwt.constants.SellerStatus;
 import com.zakaria.CustomSecurityJwt.model.CustomUserDetails;
 import com.zakaria.CustomSecurityJwt.model.User;
 import com.zakaria.CustomSecurityJwt.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -117,5 +118,9 @@ public class UserService {
     public UserDetails loadUserByUsername(String phoneNumber) {
         Optional<User> byPhoneNumber = userRepository.findByPhoneNumber(phoneNumber);
         return byPhoneNumber.map(CustomUserDetails::new).orElse(null);
+    }
+
+    public List<User> getUsersByRoleAndStatus(Role role, SellerStatus sellerStatus) {
+        return userRepository.findByRoleAndSellerStatus(role, sellerStatus);
     }
 }

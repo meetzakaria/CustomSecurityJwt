@@ -49,7 +49,8 @@ public class AuthController {
                     registerRequest.password(),
                     registerRequest.role(),
                     registerRequest.name(),
-                    registerRequest.phoneNumber()
+                    registerRequest.phoneNumber(),
+                    registerRequest.sellerStatus()
             );
 
             User savedUser = userService.createUser(user);
@@ -60,6 +61,7 @@ public class AuthController {
             userResponse.setRole(savedUser.getRole());
             userResponse.setName(savedUser.getName());
             userResponse.setPhoneNumber(savedUser.getPhoneNumber());
+            userResponse.setSellerStatus(savedUser.getSellerStatus());
 
             return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
         } catch (RuntimeException e) {

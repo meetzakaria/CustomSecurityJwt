@@ -24,4 +24,7 @@ public class Product {
     @Column(name = "image", columnDefinition = "BLOB")
     private byte[] image;
 
+    @ManyToOne
+    private User seller;
+
 }

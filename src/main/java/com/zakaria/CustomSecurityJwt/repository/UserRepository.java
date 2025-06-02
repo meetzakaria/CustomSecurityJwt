@@ -1,6 +1,7 @@
 package com.zakaria.CustomSecurityJwt.repository;
 
 import com.zakaria.CustomSecurityJwt.constants.Role;
+import com.zakaria.CustomSecurityJwt.constants.SellerStatus;
 import com.zakaria.CustomSecurityJwt.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -16,4 +17,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByPhoneNumber(String email);
 
     List<User> findByRole(Role role);
+
+    List<User> findByRoleAndSellerStatus(Role role, SellerStatus sellerStatus);
 }

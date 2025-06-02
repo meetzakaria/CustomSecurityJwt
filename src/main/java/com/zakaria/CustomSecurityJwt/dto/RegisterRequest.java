@@ -1,10 +1,11 @@
 package com.zakaria.CustomSecurityJwt.dto;
 
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import com.zakaria.CustomSecurityJwt.annotation.ValidRole;
 import com.zakaria.CustomSecurityJwt.constants.Role;
+import com.zakaria.CustomSecurityJwt.constants.SellerStatus;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public record RegisterRequest(
 
@@ -16,6 +17,7 @@ public record RegisterRequest(
         Role role,
 
         String name,
-        String phoneNumber
+        String phoneNumber,
+        SellerStatus sellerStatus
 ) {
 }

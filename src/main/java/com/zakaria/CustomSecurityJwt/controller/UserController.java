@@ -2,6 +2,7 @@ package com.zakaria.CustomSecurityJwt.controller;
 
 import com.zakaria.CustomSecurityJwt.annotation.CurrentUser;
 import com.zakaria.CustomSecurityJwt.constants.Role;
+import com.zakaria.CustomSecurityJwt.constants.SellerStatus;
 import com.zakaria.CustomSecurityJwt.dto.PasswordChangeRequest;
 import com.zakaria.CustomSecurityJwt.dto.UserCreateRequest;
 import com.zakaria.CustomSecurityJwt.dto.UserResponse;
@@ -12,7 +13,6 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -38,7 +38,6 @@ public class UserController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public List<UserResponse> getAllUsers() {
         return userService.getAllUsers().stream()
                 .map(this::convertToDTO)
@@ -46,7 +45,6 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or @userSecurity.hasUserId(authentication, #id)")
     public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {
         return userService.getUserById(id)
                 .map(user -> ResponseEntity.ok(convertToDTO(user)))
@@ -54,15 +52,22 @@ public class UserController {
     }
 
     @GetMapping("/role/{role}")
-    @PreAuthorize("hasRole('ADMIN')")
     public List<UserResponse> getUsersByRole(@PathVariable Role role) {
         return userService.getUsersByRole(role).stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/roleAndStatus")
+    public List<UserResponse> getUsersByRoleAndStatus(@RequestParam Role role, @RequestParam SellerStatus sellerStatus) {
+        List<User> usersByRoleAndStatus = userService.getUsersByRoleAndStatus(role, sellerStatus);
+
+        return usersByRoleAndStatus.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserCreateRequest userCreateRequest) {
         User user = new User(
                 userCreateRequest.password(),
@@ -76,7 +81,6 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or @userSecurity.hasUserId(authentication, #id)")
     public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdateRequest userUpdateRequest) {
         try {
             User userDetails = new User();
@@ -100,7 +104,6 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         try {
             userService.deleteUser(id);
@@ -145,6 +148,7 @@ public class UserController {
         dto.setRole(user.getRole());
         dto.setName(user.getName());
         dto.setPhoneNumber(user.getPhoneNumber());
+        dto.setSellerStatus(user.getSellerStatus());
         return dto;
     }
 }

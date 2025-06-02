@@ -1,5 +1,6 @@
 package com.zakaria.CustomSecurityJwt.dto;
 
+import com.zakaria.CustomSecurityJwt.constants.SellerStatus;
 import lombok.Getter;
 import lombok.Setter;
 import com.zakaria.CustomSecurityJwt.constants.Role;
@@ -15,4 +16,5 @@ public class UserResponse {
     private String phoneNumber;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private SellerStatus sellerStatus;
 }
